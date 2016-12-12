@@ -18,15 +18,23 @@ app.get('/', function (req, res) {
 });
 
 app.get('/form', function(req, res){ 
-    var username = req.query.username; //mytext is the name of your input box
+    var username = req.query.username; 
 
 	connection.query('SELECT * from USER WHERE firstName = ' + '\'' +username + '\'', function(err, rows, fields) {
 	  if (!err){
 
 	  	generatePDF(rows)
 	  	updatePDF(rows[0], connection)
-
-		res.send("Your user is" + rows[0].lastName);
+	  	var user = {
+		    description: []
+		};
+		user.description.push({
+			"firstName": rows[0].firstName,
+			"lastName": rows[0].lastName,
+			"image": rows[0].image,
+		})
+		console.log(user);
+		res.send("Your user is" + JSON.stringify(user, null, 2));
 
 		}
 	  else{
