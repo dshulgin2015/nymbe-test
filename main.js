@@ -23,6 +23,10 @@ app.get('/form', function(req, res){
 	connection.query('SELECT * from USER WHERE firstName = ' + '\'' +username + '\'', function(err, rows, fields) {
 	  if (!err){
 
+	  	console.log(rows)
+
+	  	if (rows.length >= 1){  	
+
 	  	generatePDF(rows)
 	  	updatePDF(rows[0], connection)
 	  	var user = {
@@ -35,6 +39,11 @@ app.get('/form', function(req, res){
 		})
 		console.log(user);
 		res.send("Your user is" + JSON.stringify(user, null, 2));
+
+		}
+		else{
+			res.send("Your user has not been found");
+		}
 
 		}
 	  else{
